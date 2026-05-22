@@ -14,7 +14,7 @@
  * Conta Spotify Premium é necessária para o Web Playback SDK.
  */
 
-const SPOTIFY_CLIENT_ID = '6d04f882a6894246aa5da2a161df1066';
+const SPOTIFY_CLIENT_ID = '';
 
 const SPOTIFY_SCOPES = [
   'streaming',
@@ -31,6 +31,8 @@ const SPOTIFY_LS_VERIFIER_KEY = 'fp_spotify_pkce_verifier';
 let spotifyPlayer      = null;
 let spotifyDeviceId    = null;
 let spotifyAccessToken = null;
+let spotifySDKReady    = false;  // SDK script carregou?
+let spotifySDKInited   = false;  // Player já foi criado?
 
 // ==================== PKCE HELPERS ====================
 function generateRandomString(length) {
@@ -203,11 +205,15 @@ function spotifyOnTokenReady() {
 
 // ==================== SDK PLAYER ====================
 window.onSpotifyWebPlaybackSDKReady = function() {
+  spotifySDKReady = true;
   if (spotifyAccessToken) spotifyInitSDK();
 };
 
 function spotifyInitSDK() {
-  if (!spotifyAccessToken || !window.Spotify) return;
+  // Evita criar dois players (condição de corrida entre token e SDK)
+  if (spotifySDKInited) return;
+  if (!spotifyAccessToken || !window.Spotify || !spotifySDKReady) return;
+  spotifySDKInited = true;
 
   spotifyPlayer = new window.Spotify.Player({
     name: 'FocusPlay Arena 🌱',
@@ -241,6 +247,7 @@ function spotifyInitSDK() {
   spotifyPlayer.addListener('authentication_error', () => {
     spotifyShowError('Token expirado. Reconecte o Spotify.');
     spotifyAccessToken = null;
+    spotifySDKInited   = false;
     localStorage.removeItem(SPOTIFY_LS_TOKEN_KEY);
     // Volta para a tela de connect
     document.getElementById('spotify-connect-section').style.display = '';
@@ -373,6 +380,7 @@ window.spotifyDisconnect = function() {
   }
   spotifyAccessToken = null;
   spotifyDeviceId    = null;
+  spotifySDKInited   = false;
   localStorage.removeItem(SPOTIFY_LS_TOKEN_KEY);
 
   document.getElementById('spotify-connect-section').style.display = '';
