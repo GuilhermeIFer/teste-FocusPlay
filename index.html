@@ -6,8 +6,12 @@
 <meta name="theme-color" content="#1a1a2e">
 <title>FocusPlay Arena 🌱</title>
 <link rel="manifest" href="manifest.json">
+<!-- Preconnect for faster font load -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Non-blocking font load with font-display=swap -->
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Space+Mono:wght@700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Space+Mono:wght@700&display=swap" rel="stylesheet"></noscript>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -23,7 +27,7 @@
 </div>
 
 <!-- SVG DEFS FOR GRADIENTS -->
-<svg width="0" height="0" style="position:absolute">
+<svg width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true">
   <defs>
     <linearGradient id="timerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
       <stop offset="0%" stop-color="#7c3aed"/>
@@ -367,8 +371,8 @@
 
 </div><!-- /app -->
 
-<!-- Spotify Web Playback SDK -->
-<script src="https://sdk.scdn.co/spotify-player.js"></script>
+<!-- Spotify Web Playback SDK - deferred to avoid render blocking -->
+<script defer src="https://sdk.scdn.co/spotify-player.js"></script>
 <!-- Spotify integration -->
 <script src="sp-player.js"></script>
 <!-- Firebase SDK -->

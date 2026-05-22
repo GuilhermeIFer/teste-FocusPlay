@@ -1,6 +1,15 @@
 /* ===================== RESET & VARIABLES ===================== */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* Font fallbacks for CLS prevention */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 700 900;
+  font-display: swap;
+  src: local('Nunito');
+}
+
 :root {
   --bg-dark: #0d0d1a;
   --bg-card: #161628;
@@ -94,7 +103,7 @@ body {
 }
 .auth-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; }
 .auth-tab {
-  flex: 1; padding: 0.6rem; border: none; cursor: pointer;
+  flex: 1; min-height: 48px; padding: 0.6rem; border: none; cursor: pointer;
   background: var(--bg-panel); color: var(--text-muted);
   border-radius: 8px; font-family: var(--font); font-weight: 700;
   transition: all 0.2s;
@@ -104,7 +113,7 @@ body {
 .input-group { margin-bottom: 1rem; }
 .input-group label { display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.4rem; }
 .input-group input {
-  width: 100%; padding: 0.75rem 1rem;
+  width: 100%; min-height: 48px; padding: 0.75rem 1rem;
   background: var(--bg-panel); border: 1px solid var(--border);
   border-radius: 8px; color: var(--text); font-family: var(--font); font-size: 0.95rem;
   transition: border-color 0.2s;
@@ -114,7 +123,7 @@ body {
 
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
-  padding: 0.75rem 1.5rem; border: none; cursor: pointer; border-radius: 10px;
+  min-height: 48px; padding: 0.75rem 1.5rem; border: none; cursor: pointer; border-radius: 10px;
   font-family: var(--font); font-weight: 800; font-size: 0.95rem;
   transition: all 0.2s; text-decoration: none;
 }
@@ -122,7 +131,7 @@ body {
 .btn-primary:hover { transform: translateY(-2px); box-shadow: var(--glow); }
 .btn-guest { background: var(--bg-panel); border: 1px solid var(--border); color: var(--text-muted); width: 100%; margin-top: 0.75rem; }
 .btn-guest:hover { border-color: var(--accent2); color: var(--accent2); }
-.btn-sm { padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 8px; }
+.btn-sm { min-height: 48px; padding: 0.5rem 1rem; font-size: 0.85rem; border-radius: 8px; }
 .btn-green { background: linear-gradient(135deg, var(--accent2), #059669); color: #0d0d1a; }
 .btn-green:hover { transform: translateY(-2px); box-shadow: var(--glow2); }
 .btn-yellow { background: linear-gradient(135deg, var(--accent3), #d97706); color: #0d0d1a; }
@@ -150,8 +159,8 @@ body {
   padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700;
 }
 .stat-badge .icon { font-size: 1rem; }
-.header-user { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; }
-.avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; background: linear-gradient(135deg, var(--accent), var(--accent2)); }
+.header-user { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; min-width: 48px; min-height: 48px; justify-content: center; }
+.avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; background: linear-gradient(135deg, var(--accent), var(--accent2)); }
 
 /* ===================== NAV ===================== */
 #nav {
@@ -164,7 +173,7 @@ body {
 }
 .nav-btn {
   display: flex; flex-direction: column; align-items: center; gap: 0.2rem;
-  padding: 0.4rem 1rem; border: none; background: transparent; cursor: pointer;
+  min-height: 48px; padding: 0.4rem 1rem; border: none; background: transparent; cursor: pointer;
   color: var(--text-muted); font-family: var(--font); font-size: 0.7rem; font-weight: 700;
   border-radius: 10px; transition: all 0.2s;
 }
@@ -175,6 +184,11 @@ body {
 .page { display: none; flex: 1; padding: 1rem; padding-bottom: 5rem; }
 .page.active { display: block; }
 
+/* Performance: promote animated elements to own layer */
+.timer-progress { will-change: stroke-dashoffset; }
+.xp-fill, .ch-progress-fill, .slot-progress-fill, .sp-progress-bar { will-change: width; }
+.loading-fill { will-change: width; }
+
 /* ===================== TIMER PAGE ===================== */
 .timer-container { max-width: 500px; margin: 0 auto; }
 
@@ -183,7 +197,7 @@ body {
   background: var(--bg-card); border-radius: 12px; padding: 0.4rem;
 }
 .session-tab {
-  flex: 1; padding: 0.5rem; border: none; cursor: pointer;
+  flex: 1; min-height: 48px; padding: 0.5rem; border: none; cursor: pointer;
   background: transparent; color: var(--text-muted);
   border-radius: 8px; font-family: var(--font); font-size: 0.8rem; font-weight: 700;
   transition: all 0.2s;
@@ -223,7 +237,7 @@ body {
 
 .duration-picker { display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 1.5rem; }
 .dur-btn {
-  padding: 0.4rem 1rem; border: 1px solid var(--border); background: var(--bg-panel);
+  min-height: 48px; padding: 0.5rem 1rem; border: 1px solid var(--border); background: var(--bg-panel);
   color: var(--text-muted); border-radius: 8px; cursor: pointer; font-family: var(--font);
   font-weight: 700; font-size: 0.85rem; transition: all 0.2s;
 }
@@ -231,14 +245,14 @@ body {
 
 .timer-controls { display: flex; gap: 0.75rem; justify-content: center; }
 .btn-timer-main {
-  padding: 0.85rem 2.5rem; font-size: 1.1rem; border-radius: 50px;
+  min-height: 48px; padding: 0.85rem 2.5rem; font-size: 1.1rem; border-radius: 50px;
   background: linear-gradient(135deg, var(--accent), var(--accent2)); color: white;
   border: none; cursor: pointer; font-family: var(--font); font-weight: 800;
   transition: all 0.2s; box-shadow: 0 4px 20px rgba(124,58,237,0.3);
 }
 .btn-timer-main:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(124,58,237,0.5); }
 .btn-timer-stop {
-  padding: 0.85rem 1.5rem; border-radius: 50px;
+  min-height: 48px; padding: 0.85rem 1.5rem; border-radius: 50px;
   background: var(--bg-panel); color: var(--accent4);
   border: 1px solid var(--accent4); cursor: pointer; font-family: var(--font); font-weight: 800;
   transition: all 0.2s;
@@ -349,7 +363,7 @@ body {
 }
 .spotify-search-bar input:focus { border-color: #1DB954; }
 .btn-spotify-search {
-  padding: 0.55rem 0.85rem; border: 1px solid var(--border); background: var(--bg-panel);
+  min-height: 48px; padding: 0.55rem 0.85rem; border: 1px solid var(--border); background: var(--bg-panel);
   border-radius: 8px; cursor: pointer; font-size: 0.9rem; transition: all 0.2s;
 }
 .btn-spotify-search:hover { border-color: #1DB954; }
@@ -359,10 +373,11 @@ body {
   display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.75rem;
 }
 .preset-btn {
-  padding: 0.3rem 0.75rem; border: 1px solid rgba(29,185,84,0.3);
+  min-height: 48px; padding: 0.5rem 0.75rem; border: 1px solid rgba(29,185,84,0.3);
   background: rgba(29,185,84,0.08); color: #1DB954;
   border-radius: 20px; cursor: pointer; font-family: var(--font);
-  font-size: 0.75rem; font-weight: 700; transition: all 0.2s;
+  font-size: 0.8rem; font-weight: 700; transition: all 0.2s;
+  touch-action: manipulation;
 }
 .preset-btn:hover { background: rgba(29,185,84,0.2); }
 
@@ -399,14 +414,16 @@ body {
 .sp-artist { font-size: 0.72rem; color: var(--text-muted); }
 .sp-controls { display: flex; align-items: center; gap: 0.3rem; }
 .sp-btn {
-  width: 32px; height: 32px; border-radius: 50%; border: none;
+  width: 44px; height: 44px; border-radius: 50%; border: none;
   background: var(--bg-card); color: var(--text); cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   font-size: 0.8rem; transition: all 0.15s;
+  /* Tap target padding to reach 48px effective area */
+  min-width: 44px; touch-action: manipulation;
 }
 .sp-btn:hover { background: var(--border); }
 .sp-btn-main {
-  width: 38px; height: 38px; background: #1DB954; color: #000; font-size: 1rem;
+  width: 48px; height: 48px; background: #1DB954; color: #000; font-size: 1rem;
 }
 .sp-btn-main:hover { background: #1ed760; box-shadow: var(--glow-spotify); }
 
@@ -445,7 +462,8 @@ body {
 }
 .sp-queue-close {
   background: none; border: none; color: var(--text-muted);
-  cursor: pointer; font-size: 0.85rem; padding: 0 0.25rem;
+  cursor: pointer; font-size: 0.85rem;
+  min-width: 48px; min-height: 48px; display: flex; align-items: center; justify-content: center;
 }
 .sp-queue-list { max-height: 220px; overflow-y: auto; }
 .sp-queue-empty {
@@ -631,7 +649,7 @@ body {
 /* ===================== RANKING PAGE ===================== */
 .ranking-container { max-width: 600px; margin: 0 auto; }
 .rank-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; background: var(--bg-card); border-radius: 12px; padding: 0.4rem; }
-.rank-tab { flex: 1; padding: 0.5rem; border: none; cursor: pointer; background: transparent; color: var(--text-muted); border-radius: 8px; font-family: var(--font); font-size: 0.8rem; font-weight: 700; transition: all 0.2s; }
+.rank-tab { flex: 1; min-height: 48px; padding: 0.5rem; border: none; cursor: pointer; background: transparent; color: var(--text-muted); border-radius: 8px; font-family: var(--font); font-size: 0.8rem; font-weight: 700; transition: all 0.2s; }
 .rank-tab.active { background: var(--accent); color: white; }
 
 .rank-list { display: flex; flex-direction: column; gap: 0.5rem; }
