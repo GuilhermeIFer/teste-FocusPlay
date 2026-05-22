@@ -417,6 +417,21 @@ body {
 .spotify-volume input[type=range] {
   flex: 1; accent-color: #1DB954; cursor: pointer;
 }
+.sp-progress-wrap {
+  display: flex; align-items: center; gap: 0.5rem;
+  margin: 0.5rem 0; font-size: 0.7rem; color: var(--text-muted);
+}
+.sp-time { min-width: 28px; font-variant-numeric: tabular-nums; }
+.sp-progress-track {
+  flex: 1; height: 4px; background: var(--border);
+  border-radius: 2px; cursor: pointer; position: relative;
+}
+.sp-progress-track:hover { height: 6px; }
+.sp-progress-bar {
+  height: 100%; background: #1DB954;
+  border-radius: 2px; width: 0%; pointer-events: none;
+  transition: width 0.5s linear;
+}
 
 /* ===================== FARM PAGE ===================== */
 .farm-container { max-width: 600px; margin: 0 auto; }
