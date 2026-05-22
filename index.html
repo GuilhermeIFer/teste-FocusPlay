@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1a1a2e">
+<title>FocusPlay Arena 🌱</title>
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- BACKGROUND STARS -->
+<div id="stars"></div>
+
+<!-- LOADING SCREEN -->
+<div id="loading-screen">
+  <div class="loading-logo">🌱</div>
+  <div class="loading-text">Carregando FocusPlay Arena...</div>
+  <div class="loading-bar"><div class="loading-fill"></div></div>
+</div>
+
+<!-- SVG DEFS FOR GRADIENTS -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <linearGradient id="timerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#06d6a0"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<!-- APP -->
+<div id="app">
+
+  <!-- ======= AUTH SCREEN ======= -->
+  <div class="screen active" id="screen-auth">
+    <div class="auth-logo">🌱</div>
+    <div class="auth-title">FocusPlay Arena</div>
+    <div class="auth-sub">Estude com foco. Cultive sua fazenda. Compita com o mundo.</div>
+    <div class="auth-card">
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="switchAuthTab('login')">Entrar</button>
+        <button class="auth-tab" onclick="switchAuthTab('register')">Cadastrar</button>
+      </div>
+      <div id="auth-form-login">
+        <div class="input-group">
+          <label>Email</label>
+          <input type="email" id="login-email" placeholder="seu@email.com">
+        </div>
+        <div class="input-group">
+          <label>Senha</label>
+          <input type="password" id="login-password" placeholder="••••••••">
+        </div>
+        <button class="btn btn-primary" onclick="doLogin()">🚀 Entrar</button>
+      </div>
+      <div id="auth-form-register" style="display:none">
+        <div class="input-group">
+          <label>Nome</label>
+          <input type="text" id="reg-name" placeholder="Seu nome">
+        </div>
+        <div class="input-group">
+          <label>Email</label>
+          <input type="email" id="reg-email" placeholder="seu@email.com">
+        </div>
+        <div class="input-group">
+          <label>Senha</label>
+          <input type="password" id="reg-password" placeholder="mínimo 6 caracteres">
+        </div>
+        <button class="btn btn-primary" onclick="doRegister()">🌱 Criar conta</button>
+      </div>
+      <button class="btn btn-guest" onclick="doGuest()">👤 Jogar sem conta</button>
+      <div class="auth-error" id="auth-error"></div>
+    </div>
+  </div>
+
+  <!-- ======= MAIN SCREEN ======= -->
+  <div class="screen" id="screen-main">
+    <!-- HEADER -->
+    <div id="header">
+      <div class="header-logo">🌱 FocusPlay</div>
+      <div class="header-stats">
+        <div class="stat-badge"><span class="icon">⭐</span><span id="hdr-xp">0</span></div>
+        <div class="stat-badge"><span class="icon">🪙</span><span id="hdr-coins">0</span></div>
+        <div class="stat-badge"><span class="icon">🔥</span><span id="hdr-streak">0</span></div>
+      </div>
+      <div class="header-user" onclick="doLogout()">
+        <div class="avatar" id="hdr-avatar">😊</div>
+      </div>
+    </div>
+
+    <!-- PAGES -->
+    <div class="page active" id="page-home">
+      <div class="home-container">
+        <div class="home-hero">
+          <div class="hero-greeting">Bem-vindo de volta,</div>
+          <div class="hero-name" id="hero-name">Jogador</div>
+          <div class="hero-level">
+            <div class="level-badge" id="hero-level-badge">Nv.1</div>
+            <div class="xp-bar-wrap">
+              <div class="xp-bar"><div class="xp-fill" id="xp-fill" style="width:0%"></div></div>
+              <div class="xp-text" id="xp-text">0 / 100 XP</div>
+            </div>
+          </div>
+          <div class="hero-stats">
+            <div class="hero-stat"><div class="hs-val" id="hs-sessions">0</div><div class="hs-lbl">Sessões</div></div>
+            <div class="hero-stat"><div class="hs-val" id="hs-focus">0h</div><div class="hs-lbl">Foco total</div></div>
+            <div class="hero-stat"><div class="hs-val" id="hs-plants">0</div><div class="hs-lbl">Plantadas</div></div>
+          </div>
+        </div>
+
+        <div class="streak-card">
+          <div class="streak-flame">🔥</div>
+          <div class="streak-info">
+            <h3><span id="streak-count">0</span> dias seguidos!</h3>
+            <p id="streak-msg">Faça uma sessão hoje para continuar o streak</p>
+          </div>
+        </div>
+
+        <div class="section-title">🎯 Desafios de Hoje</div>
+        <div class="challenges-list" id="challenges-list"></div>
+
+        <div class="section-title">⚡ Início Rápido</div>
+        <button class="btn btn-green" style="width:100%; padding:1rem; font-size:1rem;" onclick="switchPage('page-timer')">
+          🍅 Iniciar Sessão Pomodoro
+        </button>
+      </div>
+    </div>
+
+    <!-- TIMER PAGE -->
+    <div class="page" id="page-timer">
+      <div class="timer-container">
+        <div class="session-info">
+          <div class="info-box"><div class="ib-val" id="si-sessions">0</div><div class="ib-label">Sessões hoje</div></div>
+          <div class="info-box"><div class="ib-val" id="si-xp">0</div><div class="ib-label">XP ganho</div></div>
+          <div class="info-box"><div class="ib-val" id="si-coins">0</div><div class="ib-label">Moedas</div></div>
+        </div>
+
+        <div class="session-type-tabs">
+          <button class="session-tab active" onclick="setMode('solo')">☕ Solo</button>
+          <button class="session-tab" onclick="setMode('arena')">⚔️ Arena</button>
+        </div>
+
+        <div id="arena-badge-wrap" style="display:none; text-align:center; margin-bottom:0.75rem;">
+          <div class="arena-badge">⚔️ Modo Arena +25% XP</div>
+        </div>
+
+        <div class="timer-card">
+          <div class="timer-mode-label" id="timer-mode-label">FOCO</div>
+          <div class="timer-circle-wrap">
+            <svg class="timer-svg" viewBox="0 0 200 200" width="200" height="200">
+              <circle class="timer-track" cx="100" cy="100" r="88"/>
+              <circle class="timer-progress" id="timer-circle" cx="100" cy="100" r="88"
+                stroke-dasharray="553" stroke-dashoffset="0"/>
+            </svg>
+            <div class="timer-text-wrap">
+              <div class="timer-display" id="timer-display">25:00</div>
+              <div class="timer-phase" id="timer-phase">Pronto para começar</div>
+            </div>
+          </div>
+
+          <div class="duration-picker" id="duration-picker">
+            <button class="dur-btn active" onclick="setDuration(25)">25 min</button>
+            <button class="dur-btn" onclick="setDuration(45)">45 min</button>
+            <button class="dur-btn" onclick="setDuration(60)">60 min</button>
+          </div>
+
+          <div class="timer-controls">
+            <button class="btn-timer-main" id="btn-start" onclick="toggleTimer()">▶ Iniciar</button>
+            <button class="btn-timer-stop" id="btn-stop" onclick="stopTimer()" style="display:none">⏹</button>
+          </div>
+        </div>
+
+        <!-- ======= SPOTIFY PLAYER ======= -->
+        <div class="spotify-card" id="spotify-card">
+          <div class="spotify-header">
+            <div class="spotify-brand">
+              <svg class="spotify-logo" viewBox="0 0 24 24" fill="#1DB954">
+                <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+              </svg>
+              <span>Música para Estudar</span>
+            </div>
+            <div id="spotify-status-badge" class="spotify-badge spotify-badge-off">Desconectado</div>
+          </div>
+
+          <!-- Não conectado -->
+          <div id="spotify-connect-section">
+            <p class="spotify-hint">Conecte sua conta Spotify para ouvir música enquanto estuda.</p>
+            <div class="input-group" style="margin-bottom:0.75rem">
+              <label>Client ID do Spotify</label>
+              <input type="text" id="spotify-client-id" placeholder="Cole seu Client ID aqui">
+            </div>
+            <button class="btn btn-spotify" onclick="spotifyConnect()">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+              Conectar com Spotify
+            </button>
+            <p class="spotify-setup-hint">
+              <a href="https://developer.spotify.com/dashboard" target="_blank">Como criar um Client ID →</a>
+            </p>
+          </div>
+
+          <!-- Conectado: player -->
+          <div id="spotify-player-section" style="display:none">
+            <!-- Busca -->
+            <div class="spotify-search-bar">
+              <input type="text" id="spotify-search-input" placeholder="Buscar música, artista ou playlist..." onkeydown="if(event.key==='Enter') spotifySearch()">
+              <button onclick="spotifySearch()" class="btn-spotify-search">🔍</button>
+            </div>
+
+            <!-- Playlists rápidas -->
+            <div class="spotify-presets">
+              <button class="preset-btn" onclick="spotifyPlayContext('spotify:playlist:37i9dQZF1DWZeKCadgRdKQ')">Lo-fi</button>
+              <button class="preset-btn" onclick="spotifyPlayContext('spotify:playlist:37i9dQZF1DX8NTLI2TtZa6')">Clássico</button>
+              <button class="preset-btn" onclick="spotifyPlayContext('spotify:playlist:37i9dQZF1DWXRqgorJj26U')">Foco</button>
+              <button class="preset-btn" onclick="spotifyPlayContext('spotify:playlist:37i9dQZF1DX4sWSpwq3LiO')">Jazz</button>
+            </div>
+
+            <!-- Resultados de busca -->
+            <div id="spotify-search-results" class="spotify-results"></div>
+
+            <!-- Now playing -->
+            <div id="spotify-now-playing" class="spotify-now-playing" style="display:none">
+              <img id="sp-album-art" src="" alt="capa" class="sp-album-art">
+              <div class="sp-track-info">
+                <div class="sp-track-name" id="sp-track-name">—</div>
+                <div class="sp-artist" id="sp-artist">—</div>
+              </div>
+              <div class="sp-controls">
+                <button class="sp-btn" onclick="spotifyPrev()">⏮</button>
+                <button class="sp-btn sp-btn-main" id="sp-play-btn" onclick="spotifyTogglePlay()">▶</button>
+                <button class="sp-btn" onclick="spotifyNext()">⏭</button>
+              </div>
+            </div>
+
+            <!-- Volume -->
+            <div class="spotify-volume">
+              <span>🔈</span>
+              <input type="range" id="spotify-volume" min="0" max="100" value="70" oninput="spotifySetVolume(this.value)">
+              <span>🔊</span>
+            </div>
+
+            <button class="btn btn-sm btn-outline" style="width:100%;margin-top:0.5rem" onclick="spotifyDisconnect()">Desconectar Spotify</button>
+          </div>
+        </div>
+        <!-- /SPOTIFY PLAYER -->
+
+      </div>
+    </div>
+
+    <!-- FARM PAGE -->
+    <div class="page" id="page-farm">
+      <div class="farm-container">
+        <div class="farm-header">
+          <div class="farm-title">🌾 Minha Fazenda</div>
+          <button class="btn btn-sm btn-outline" onclick="showInventory()">🎒 Sementes</button>
+        </div>
+
+        <div id="active-session-banner" style="display:none" class="session-active-banner">
+          <div class="pulse-dot"></div>
+          <div>Sessão ativa! Suas plantas estão crescendo 🌱</div>
+        </div>
+
+        <div class="farm-grid" id="farm-grid"></div>
+
+        <div class="section-title">📖 Guia de Plantas</div>
+        <div id="plant-guide" style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem;"></div>
+      </div>
+    </div>
+
+    <!-- SHOP PAGE -->
+    <div class="page" id="page-shop">
+      <div class="shop-container">
+        <div class="shop-coins">
+          <span style="font-size:1.5rem">🪙</span>
+          <div>
+            <div class="amt" id="shop-coins-amt">0</div>
+            <div class="lbl">moedas disponíveis</div>
+          </div>
+        </div>
+        <div class="shop-section">
+          <div class="shop-section-title">🌱 Sementes</div>
+          <div class="shop-grid" id="shop-seeds"></div>
+        </div>
+        <div class="shop-section">
+          <div class="shop-section-title">🏗️ Expansões da Fazenda</div>
+          <div class="shop-grid" id="shop-expansions"></div>
+        </div>
+        <div class="shop-section">
+          <div class="shop-section-title">🧪 Melhorias de Solo</div>
+          <div class="shop-grid" id="shop-upgrades"></div>
+        </div>
+        <div class="shop-section">
+          <div class="shop-section-title">🏠 Cosméticos</div>
+          <div class="shop-grid" id="shop-cosmetics"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RANKING PAGE -->
+    <div class="page" id="page-ranking">
+      <div class="ranking-container">
+        <div class="rank-tabs">
+          <button class="rank-tab active" onclick="switchRankTab('daily')">Diário</button>
+          <button class="rank-tab" onclick="switchRankTab('weekly')">Semanal</button>
+          <button class="rank-tab" onclick="switchRankTab('all')">Geral</button>
+        </div>
+        <div class="rank-list" id="rank-list"></div>
+      </div>
+    </div>
+
+    <!-- NAV -->
+    <nav id="nav">
+      <button class="nav-btn active" onclick="switchPage('page-home')"><span class="nav-icon">🏠</span>Início</button>
+      <button class="nav-btn" onclick="switchPage('page-timer')"><span class="nav-icon">⏱️</span>Timer</button>
+      <button class="nav-btn" onclick="switchPage('page-farm')"><span class="nav-icon">🌾</span>Fazenda</button>
+      <button class="nav-btn" onclick="switchPage('page-shop')"><span class="nav-icon">🏪</span>Loja</button>
+      <button class="nav-btn" onclick="switchPage('page-ranking')"><span class="nav-icon">🏆</span>Ranking</button>
+    </nav>
+  </div>
+
+  <!-- PENALTY MODAL -->
+  <div class="modal-overlay" id="penalty-modal">
+    <div class="modal">
+      <h2>😬 Você saiu!</h2>
+      <p id="penalty-modal-time"></p>
+      <div class="penalty-list" id="penalty-list"></div>
+      <button class="btn btn-primary" onclick="closePenaltyModal()">Entendi, seguir em frente</button>
+    </div>
+  </div>
+
+  <!-- SEED PICKER -->
+  <div class="seed-picker-overlay" id="seed-picker">
+    <div class="seed-picker">
+      <h3>🌱 Escolher Semente</h3>
+      <div class="seed-grid" id="seed-grid-content"></div>
+      <button class="btn btn-outline" style="width:100%; margin-top:1rem;" onclick="closeSeedPicker()">Cancelar</button>
+    </div>
+  </div>
+
+  <!-- LEVEL UP MODAL -->
+  <div class="modal-overlay" id="levelup-modal">
+    <div class="modal">
+      <div class="lu-emoji" id="lu-emoji">🎉</div>
+      <h2>Nível Up!</h2>
+      <p id="lu-msg">Você chegou ao nível <strong id="lu-level"></strong>!</p>
+      <p style="color:var(--accent2); font-weight:700; margin-bottom:1.5rem;" id="lu-reward"></p>
+      <button class="btn btn-primary" onclick="closeLevelUpModal()">Incrível! 🚀</button>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast-container"></div>
+
+</div><!-- /app -->
+
+<!-- Spotify Web Playback SDK -->
+<script src="https://sdk.scdn.co/spotify-player.js"></script>
+<!-- Firebase SDK -->
+<script type="module" src="app.js"></script>
+
+</body>
+</html>
