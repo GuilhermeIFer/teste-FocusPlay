@@ -224,7 +224,17 @@
                 <button class="sp-btn" onclick="spotifyPrev()">⏮</button>
                 <button class="sp-btn sp-btn-main" id="sp-play-btn" onclick="spotifyTogglePlay()">▶</button>
                 <button class="sp-btn" onclick="spotifyNext()">⏭</button>
+                <button class="sp-btn" id="sp-queue-btn" onclick="spotifyToggleQueue()" title="Fila">☰</button>
               </div>
+            </div>
+
+            <!-- Painel da fila -->
+            <div id="sp-queue-panel" style="display:none">
+              <div class="sp-queue-header">
+                <span>🎵 Fila de reprodução</span>
+                <button class="sp-queue-close" onclick="spotifyToggleQueue()">✕</button>
+              </div>
+              <div id="sp-queue-list" class="sp-queue-list"></div>
             </div>
 
             <!-- Barra de progresso -->
