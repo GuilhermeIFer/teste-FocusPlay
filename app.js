@@ -3,7 +3,7 @@
  * Módulo ES com Firebase e integração ao Spotify
  */
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { initializeApp } from "firebase/app";
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -40,8 +40,8 @@ let app, auth, db;
 let useFirebase = false;
 
 try {
-  if (FIREBASE_CONFIG.apiKey !== "COLOQUE_SUA_API_KEY") {
-    app = initializeApp(FIREBASE_CONFIG);
+  if (FIREBASE_CONFIG.apiKey !== "AIzaSyATjtWVO9LhH8J0nLT4f12Oy5HJFCyZivk") {
+    const app = initializeApp(firebaseConfig);
     auth = getAuth(app);
     db = getFirestore(app);
     useFirebase = true;
