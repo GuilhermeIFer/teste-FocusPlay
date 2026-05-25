@@ -143,6 +143,7 @@ function loadState() {
 
 function saveState() {
   LS.set('gamestate', GS);
+  if (GS.uid) LS.set('gs_'+GS.uid, GS); // salva por uid para múltiplos usuários
   if (useFirebase && GS.uid) {
     try {
       updateDoc(doc(db, 'users', GS.uid), {
@@ -205,8 +206,9 @@ async function doLogin() {
     const user = users[email];
     if (!user || user.pass !== btoa(pass)) { setAuthError('Email ou senha incorretos'); return; }
     GS.uid = user.uid; GS.name = user.name; GS.email = email;
-    const savedGS = LS.get('gs_'+GS.uid);
-    if (savedGS) GS = Object.assign(GS, savedGS, { timerRunning: false });
+    // Tenta carregar estado salvo por uid; fallback para 'gamestate' (compatibilidade)
+    const savedGS = LS.get('gs_'+GS.uid) || LS.get('gamestate');
+    if (savedGS) GS = Object.assign(GS, savedGS, { uid: user.uid, name: user.name, email: email, timerRunning: false });
     enterGame();
   }
 }
@@ -294,8 +296,7 @@ function enterGame() {
   document.getElementById('loading-screen').style.display = 'none';
   setupVisibilityAPI();
 
-  // Carrega o módulo do Spotify após entrar no jogo
-  import('./spotify.js').catch(e => console.warn('Spotify module:', e));
+  // sp-player.js já é carregado via <script> no index.html
 }
 
 // ==================== HUD ====================
