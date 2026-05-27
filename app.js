@@ -40,7 +40,7 @@ let app, auth, db;
 let useFirebase = false;
 
 try {
-  if (FIREBASE_CONFIG.apiKey !== "AIzaSyC4yKtVY8fmwBUFYr3AVI-O-au_jYAxbd4") {
+  if (FIREBASE_CONFIG.apiKey !== "SUA_API_KEY") {
     app = initializeApp(FIREBASE_CONFIG);
     auth = getAuth(app);
     db = getFirestore(app);
