@@ -1,4 +1,4 @@
- FocusPlay 
+FocusPlay
 
 Estude com foco. Cultive sua fazenda. Compita com o mundo.
 
@@ -60,11 +60,11 @@ O FocusPlay Arena possui um sistema de penalidades para incentivar o foco contí
 
 Caso o usuário saia da aplicação durante uma sessão ativa, as plantas sofrem consequências de acordo com sua raridade:
 
-Raridade	Penalidade
-Comum	❄️ Congela o crescimento
-Raro	📉 Perde qualidade
-Épico	⏪ Regride progresso
-Lendário	💀 Morre e perde a semente
+Raridade Penalidade
+Comum ❄️ Congela o crescimento
+Raro 📉 Perde qualidade
+Épico ⏪ Regride progresso
+Lendário 💀 Morre e perde a semente
 
 A detecção ocorre através da utilização da Page Visibility API.
 
@@ -89,23 +89,23 @@ Também existem:
 
 Os desafios incentivam a constância nos estudos e oferecem recompensas adicionais.
 
-Desafio	Objetivo	Recompensa
-Maratonista	Completar 3 sessões	+50 XP e +30 moedas
-Sem parar	Não sair do app durante uma sessão	+40 XP e +20 moedas
-Colheita	Colher 2 plantas	+60 XP e +40 moedas
-Foco longo	Completar sessão de 45 minutos	+80 XP e +50 moedas
+Desafio Objetivo Recompensa
+Maratonista Completar 3 sessões +50 XP e +30 moedas
+Sem parar Não sair do app durante uma sessão +40 XP e +20 moedas
+Colheita Colher 2 plantas +60 XP e +40 moedas
+Foco longo Completar sessão de 45 minutos +80 XP e +50 moedas
 📊 Sistema de Níveis
-Nível	Nome	XP Necessário
-1	Sementinha 🌱	0
-2	Brotinho 🌿	100
-3	Agricultor 🧑‍🌾	250
-4	Fazendeiro 🌾	500
-5	Mestre Foco 🎯	900
-6	Cultivador 🪴	1.500
-7	Guardião 🌳	2.500
-8	Lendário 💫	4.000
-9	Mítico 🌌	6.000
-10	Arquimago 💎	9.000
+Nível Nome XP Necessário
+1 Sementinha 🌱 0
+2 Brotinho 🌿 100
+3 Agricultor 🧑‍🌾 250
+4 Fazendeiro 🌾 500
+5 Mestre Foco 🎯 900
+6 Cultivador 🪴 1.500
+7 Guardião 🌳 2.500
+8 Lendário 💫 4.000
+9 Mítico 🌌 6.000
+10 Arquimago 💎 9.000
 🏪 Loja Virtual
 
 A loja permite utilizar moedas obtidas durante o jogo para adquirir melhorias.
@@ -121,16 +121,16 @@ Cosméticos
 Pets virtuais 🐱🐶🦊
 Decorações para a fazenda
 🌿 Plantas Disponíveis
-Planta	Emoji	Raridade	Sessão Necessária	Rendimento	Custo
-Trigo	🌾	Comum	1 min	15 moedas	Grátis
-Cenoura	🥕	Comum	2 min	25 moedas	10 moedas
-Milho	🌽	Comum	3 min	40 moedas	20 moedas
-Tomate	🍅	Raro	5 min	80 moedas	50 moedas
-Abóbora	🎃	Raro	7 min	120 moedas	80 moedas
-Uva	🍇	Épico	10 min	200 moedas	150 moedas
-Melão	🍈	Épico	12 min	280 moedas	200 moedas
-Trufa	🍄	Lendário	20 min	500 moedas	400 moedas
-Cristal	💎	Lendário	25 min	800 moedas	600 moedas
+Planta Emoji Raridade Sessão Necessária Rendimento Custo
+Trigo 🌾 Comum 1 min 15 moedas Grátis
+Cenoura 🥕 Comum 2 min 25 moedas 10 moedas
+Milho 🌽 Comum 3 min 40 moedas 20 moedas
+Tomate 🍅 Raro 5 min 80 moedas 50 moedas
+Abóbora 🎃 Raro 7 min 120 moedas 80 moedas
+Uva 🍇 Épico 10 min 200 moedas 150 moedas
+Melão 🍈 Épico 12 min 280 moedas 200 moedas
+Trufa 🍄 Lendário 20 min 500 moedas 400 moedas
+Cristal 💎 Lendário 25 min 800 moedas 600 moedas
 🎵 Integração com Spotify
 
 O projeto contará com integração da API do Spotify para permitir que os usuários possam ouvir música durante os estudos sem precisar sair da plataforma.
@@ -190,11 +190,11 @@ Google Fonts Nunito
 Google Fonts Space Mono
 📁 Estrutura do Projeto
 /
-├── index.html      # Estrutura principal da aplicação
-├── style.css       # Estilização completa do sistema
-├── app.js          # Lógica principal do jogo e sistema Pomodoro
-├── spotify.js      # Integração com API do Spotify
-└── manifest.json   # Configuração PWA
+├── index.html # Estrutura principal da aplicação
+├── style.css # Estilização completa do sistema
+├── app.js # Lógica principal do jogo e sistema Pomodoro
+├── spotify.js # Integração com API do Spotify
+└── manifest.json # Configuração PWA
 🚀 Como Utilizar
 Abra o arquivo index.html em um navegador moderno
 Faça login ou utilize o modo visitante
@@ -209,9 +209,9 @@ Conecte sua conta Spotify para ouvir músicas durante os estudos
 Para utilizar sincronização em nuvem, configure as credenciais do Firebase no arquivo app.js.
 
 const firebaseConfig = {
-  apiKey: "SUA_API_KEY",
-  authDomain: "SEU_PROJETO.firebaseapp.com",
-  projectId: "SEU_PROJETO",
+apiKey: "SUA_API_KEY",
+authDomain: "SEU_PROJETO.firebaseapp.com",
+projectId: "SEU_PROJETO",
 };
 🎓 Objetivo do Projeto
 
