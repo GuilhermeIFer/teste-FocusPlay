@@ -11,6 +11,8 @@ import {
   signOut,
   onAuthStateChanged,
   updateProfile,
+  confirmPasswordReset,
+  verifyPasswordResetCode,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import {
   getFirestore,
@@ -40,7 +42,7 @@ let app, auth, db;
 let useFirebase = false;
 
 try {
-  if (FIREBASE_CONFIG.apiKey !== "SUA_API_KEY") {
+  if (FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.apiKey !== "SUA_API_KEY") {
     app = initializeApp(FIREBASE_CONFIG);
     auth = getAuth(app);
     db = getFirestore(app);
@@ -1550,6 +1552,18 @@ window.showToast = showToast;
 
 // ==================== INIT ====================
 window.addEventListener("DOMContentLoaded", () => {
+  // Verifica se a URL tem um oobCode do Firebase (link de reset de senha)
+  const urlParams = new URLSearchParams(window.location.search);
+  const mode = urlParams.get("mode");
+  const oobCode = urlParams.get("oobCode");
+
+  if (mode === "resetPassword" && oobCode) {
+    // Esconde o loading e abre direto o modal de nova senha
+    document.getElementById("loading-screen").style.display = "none";
+    openNewPasswordModal(oobCode);
+    return;
+  }
+
   setTimeout(() => {
     if (useFirebase) {
       onAuthStateChanged(auth, async (user) => {
@@ -1562,11 +1576,61 @@ window.addEventListener("DOMContentLoaded", () => {
           enterGame();
         } else {
           document.getElementById("loading-screen").style.display = "none";
+          showScreen("screen-auth");
         }
       });
     } else {
       document.getElementById("loading-screen").style.display = "none";
+      showScreen("screen-auth");
     }
     updateTimerDisplay();
   }, 1200);
 });
+
+// ==================== RESET DE SENHA (link do email) ====================
+function openNewPasswordModal(oobCode) {
+  const modal = document.getElementById("modal-new-password");
+  modal.style.display = "flex";
+  modal.dataset.oobCode = oobCode;
+  showScreen("screen-auth");
+}
+
+async function doConfirmNewPassword() {
+  const modal = document.getElementById("modal-new-password");
+  const oobCode = modal.dataset.oobCode;
+  const newPass = document.getElementById("new-password-input").value;
+  const confirm = document.getElementById("new-password-confirm").value;
+  const errorEl = document.getElementById("new-password-error");
+  const btn = document.getElementById("btn-confirm-new-password");
+
+  if (!newPass || newPass.length < 6) {
+    errorEl.textContent = "Senha muito curta (mín. 6 caracteres)";
+    return;
+  }
+  if (newPass !== confirm) {
+    errorEl.textContent = "As senhas não coincidem";
+    return;
+  }
+
+  try {
+    btn.disabled = true;
+    btn.textContent = "⏳ Salvando...";
+    await verifyPasswordResetCode(auth, oobCode);
+    await confirmPasswordReset(auth, oobCode, newPass);
+    modal.style.display = "none";
+    // Limpa o oobCode da URL sem recarregar a página
+    window.history.replaceState({}, document.title, window.location.pathname);
+    showToast("✅ Senha alterada com sucesso! Faça login.", "success");
+  } catch (e) {
+    const msgs = {
+      "auth/expired-action-code": "Link expirado. Solicite um novo email.",
+      "auth/invalid-action-code": "Link inválido ou já utilizado.",
+      "auth/weak-password": "Senha muito fraca.",
+    };
+    errorEl.textContent = msgs[e.code] || "Erro ao redefinir senha.";
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "🔐 Salvar nova senha";
+  }
+}
+window.doConfirmNewPassword = doConfirmNewPassword;

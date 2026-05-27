@@ -690,6 +690,54 @@
       </div>
 
       <div id="toast-container"></div>
+
+      <!-- ======= MODAL: NOVA SENHA (link do email) ======= -->
+      <div
+        id="modal-new-password"
+        style="
+          display: none;
+          position: fixed;
+          inset: 0;
+          background: rgba(0, 0, 0, 0.7);
+          z-index: 9999;
+          align-items: center;
+          justify-content: center;
+          padding: 1rem;
+        ">
+        <div
+          style="
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 360px;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+          ">
+          <div style="font-size: 2rem; text-align: center; margin-bottom: 0.5rem">🔐</div>
+          <h3 style="text-align: center; margin: 0 0 0.5rem; color: var(--text)">
+            Criar nova senha
+          </h3>
+          <p style="text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem">
+            Digite e confirme sua nova senha.
+          </p>
+          <div class="input-group">
+            <label>Nova senha</label>
+            <input type="password" id="new-password-input" placeholder="Mínimo 6 caracteres" />
+          </div>
+          <div class="input-group">
+            <label>Confirmar senha</label>
+            <input type="password" id="new-password-confirm" placeholder="Repita a senha" />
+          </div>
+          <div class="auth-error" id="new-password-error" style="margin-bottom: 0.75rem"></div>
+          <button
+            class="btn btn-primary"
+            onclick="doConfirmNewPassword()"
+            id="btn-confirm-new-password">
+            🔐 Salvar nova senha
+          </button>
+        </div>
+      </div>
     </div>
     <!-- /app -->
 
