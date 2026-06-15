@@ -157,7 +157,6 @@
             </div>
           </div>
           <div class="header-user">
-
             <button class="btn-logout" onclick="doLogout()" title="Sair">
               Sair
             </button>
@@ -403,14 +402,16 @@
                   id="spotify-now-playing"
                   class="spotify-now-playing"
                   style="display: none">
-                  <img
-                    id="sp-album-art"
-                    src=""
-                    alt="capa"
-                    class="sp-album-art" />
-                  <div class="sp-track-info">
-                    <div class="sp-track-name" id="sp-track-name">—</div>
-                    <div class="sp-artist" id="sp-artist">—</div>
+                  <div class="sp-now-top">
+                    <img
+                      id="sp-album-art"
+                      src=""
+                      alt="capa"
+                      class="sp-album-art" />
+                    <div class="sp-track-info">
+                      <div class="sp-track-name" id="sp-track-name">—</div>
+                      <div class="sp-artist" id="sp-artist">—</div>
+                    </div>
                   </div>
                   <div class="sp-controls">
                     <button class="sp-btn" onclick="spotifyPrev()">⏮</button>

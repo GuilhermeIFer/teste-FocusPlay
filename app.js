@@ -368,6 +368,7 @@ let GS = {
   uid: null,
   name: "Jogador",
   email: null,
+  avatar: "😊",
   xp: 0,
   coins: 0,
   level: 1,
@@ -590,6 +591,7 @@ function doLogout() {
     uid: null,
     name: "Jogador",
     email: null,
+    avatar: "😊",
     xp: 0,
     coins: 0,
     level: 1,
@@ -1329,6 +1331,7 @@ async function renderRanking() {
     list.innerHTML += `
       <div class="rank-item ${isMe ? "me" : ""}">
         <div class="rank-pos ${posClass}">${pos <= 3 ? ["🥇", "🥈", "🥉"][pos - 1] : pos}</div>
+        <div class="rank-avatar" style="background:linear-gradient(135deg,var(--accent),var(--accent2))">${p.avatar || "😊"}</div>
         <div class="rank-info">
           <div class="ri-name">${p.name}${isMe ? " (você)" : ""}</div>
           <div class="ri-level">Nível ${p.level || 1}</div>
